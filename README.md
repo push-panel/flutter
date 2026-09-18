@@ -53,7 +53,7 @@ class MainActivity : FlutterActivity() {
 
 بدون این مرحله `google-services.json` نادیده گرفته می‌شود، توکن FCM ساخته نمی‌شود و پوشی دریافت نمی‌کنی (بیلد موفق می‌شود ولی خبری از پوش نیست).
 
-۱. فایل `google-services.json` را در `android/app/` بگذار؛ `package_name` داخل آن باید برابر پکیج برنامه (`applicationId`) باشد.
+۱. فایل `google-services.json` پروژه فایربیس خودت را از کنسول فایربیس بگیر و در `android/app/` بگذار (این فایل عمداً در ریپو نیست چون حاوی کلید خصوصی است). `package_name` داخل آن باید برابر پکیج برنامه (`applicationId`) باشد. بدون این فایل بیلد خطا می‌دهد.
 
 ۲. در `android/settings.gradle.kts` داخل بلاک `plugins` این خط را اضافه کن:
 

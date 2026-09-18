@@ -46,3 +46,7 @@ app.*.map.json
 
 # Local SDK paths (machine-specific)
 android/local.properties
+
+# Firebase config contains private API keys - each developer adds their own file
+**/google-services.json
+**/GoogleService-Info.plist
