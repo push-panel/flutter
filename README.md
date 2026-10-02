@@ -83,14 +83,63 @@ plugins {
 build/app/generated/res/processDebugGoogleServices/values/values.xml
 ```
 
-## ۵. بیلد و تست
+## ۵. سرویس فایربیس اختصاصی (اختیاری — فقط اگر کتابخانه پوش دیگری هم داری)
+
+FCM در هر اپ فقط به **یک** `FirebaseMessagingService` پیام تحویل می‌دهد. اگر کتابخانه دیگری هم سرویس خودش را دارد (یا خودت سرویس فایربیس داری)، باید سرویس داخلی SDK را حذف کنی و همه پیام‌ها را از سرویس خودت به هر کتابخانه فوروارد کنی — پیام‌هایی که مال پنل نیستند توسط SDK نادیده گرفته می‌شوند (مارکر `pushpanel=pushpanel`).
+
+۱. در `android/app/src/main/AndroidManifest.xml` سرویس داخلی SDK را حذف کن (`xmlns:tools` را هم به تگ `manifest` اضافه کن):
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <application ...>
+        <!-- حذف سرویس داخلی SDK تا فقط سرویس خودمان پیام بگیرد -->
+        <service
+            android:name="ir.pushpanel.sdk.PushMessagingService"
+            tools:node="remove" />
+        <!-- سرویس خودمان -->
+        <service
+            android:name=".MyFirebaseService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>
+```
+
+۲. سرویس خودت همه پیام‌ها را فوروارد کند:
+
+```kotlin
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
+import ir.pushpanel.sdk.PushPanel
+
+class MyFirebaseService : FirebaseMessagingService() {
+    override fun onMessageReceived(message: RemoteMessage) {
+        super.onMessageReceived(message)
+        PushPanel.forwardMessage(this, message) // فقط پیام‌های پنل هندل می‌شود، بقیه نادیده گرفته می‌شود
+        // ... هندل پیام‌های خودت / کتابخانه دیگر ...
+    }
+
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        PushPanel.forwardToken(this, token)
+    }
+}
+```
+
+نکته: `PushPanel.init` (بخش ۲) همچنان لازم است؛ فوروارد قبل از init نادیده گرفته می‌شود. اگر سرویس اختصاصی نداری، این بخش را رد کن — سرویس داخلی SDK به‌صورت پیش‌فرض کار می‌کند.
+
+## ۶. بیلد و تست
 
 ```powershell
 flutter analyze
 flutter build apk --debug
 ```
 
-## ۶. عیب‌یابی (اگر پوش نرسید)
+## ۷. عیب‌یابی (اگر پوش نرسید)
 
 - اپ را کامل uninstall و دوباره نصب کن تا توکن تازه با SDK جدید ثبت شود.
 - دسترسی نوتیفیکیشن را بده (اندروید ۱۳+) و روی دیوایس/امولاتور دارای Play Services تست کن.
