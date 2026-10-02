@@ -2,7 +2,7 @@
 
 اپ نمونه فلاتر برای اتصال کتابخانه پوش PushPanel در اندروید.
 
-کتابخانه: `ir.push-panel:push-sdk:1.7.2` از MavenCentral
+کتابخانه: `ir.push-panel:push-sdk:1.8.3` از MavenCentral
 
 ## ۱. افزودن کتابخانه
 
@@ -10,7 +10,7 @@
 
 ```kotlin
 dependencies {
-    implementation("ir.push-panel:push-sdk:1.7.2")
+    implementation("ir.push-panel:push-sdk:1.8.3")
 }
 ```
 
@@ -19,13 +19,13 @@ dependencies {
 `android/app/src/main/kotlin/com/pushpanel/test/MainActivity.kt`:
 
 ```kotlin
-import ir.pushpanel.sdk.PushSdk
+import ir.pushpanel.sdk.PushPanel
 
 class MainActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestNotificationPermission()
-        PushSdk.init(this)
+        PushPanel.init(this)
     }
 
     private fun requestNotificationPermission() {
@@ -38,7 +38,7 @@ class MainActivity : FlutterActivity() {
 }
 ```
 
-> در نسخه 1.7.2 به `PushSdk.handleIntent` و `onNewIntent` و کد جداگانه برای اکتیویتی اسپلش نیازی نیست؛ فقط `PushSdk.init` کافی است.
+> در نسخه 1.8.3 نقطه ورود به `PushPanel` تغییر نام داده (قبلاً `PushSdk`) و به `handleIntent` و `onNewIntent` و کد جداگانه برای اکتیویتی اسپلش نیازی نیست؛ فقط `PushPanel.init` کافی است.
 
 ## ۳. دسترسی‌ها
 

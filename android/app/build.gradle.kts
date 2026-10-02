@@ -46,5 +46,5 @@ flutter {
 }
 
 dependencies {
-    implementation("ir.push-panel:push-sdk:1.7.2")
+    implementation("ir.push-panel:push-sdk:1.8.3")
 }

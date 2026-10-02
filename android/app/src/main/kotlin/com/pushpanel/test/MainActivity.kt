@@ -5,7 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
-import ir.pushpanel.sdk.PushSdk
+import ir.pushpanel.sdk.PushPanel
 
 class MainActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,8 +13,8 @@ class MainActivity : FlutterActivity() {
 
         requestNotificationPermission()
 
-        // Same as native sample in F:\workspace\pushpanel_test
-        PushSdk.init(this)
+        // push-sdk 1.8.3: entry point renamed PushSdk -> PushPanel
+        PushPanel.init(this)
     }
 
     private fun requestNotificationPermission() {
